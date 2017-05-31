@@ -85,6 +85,11 @@ func (f *FlagLoader) Load(s interface{}) error {
 		args = f.Args
 	}
 
+	// 其实flag.VisitAll在源码里直接调用了CommandLine的VisitAll方法
+	flag.VisitAll(func(ff *flag.Flag) {
+		f.flagSet.Var(ff.Value, ff.Name, ff.Usage)
+	})
+
 	return flagSet.Parse(args)
 }
 
